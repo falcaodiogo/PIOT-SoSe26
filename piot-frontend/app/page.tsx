@@ -51,7 +51,7 @@ export default function Home() {
       </div>
 
       <div className="bg-gray-100 p-4 rounded-lg min-h-75 border border-gray-300">
-        <h2 className="text-lg font-semibold mb-3">Incoming Messages</h2>
+        <h2 className="text-lg text-black font-semibold mb-3">Incoming Messages</h2>
         {messages.length === 0 ? (
           <p className="text-black italic">Waiting for hardware data...</p>
         ) : (

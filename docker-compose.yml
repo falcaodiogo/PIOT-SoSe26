@@ -3,7 +3,21 @@ services:
     image: eclipse-mosquitto:latest
     container_name: mosquitto_broker
     ports:
-      - "1883:1883"  # MQTT
-      - "9001:9001" # Next.js
+      - "1883:1883" # MQTT
+      - "9001:9001" # WebSocket Next.js
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  frontend:
+    image: oven/bun:latest
+    container_name: piot_frontend
+    working_dir: /app
+    volumes:
+      - ./piot-frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: sh -c "bun install && bun dev"
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
