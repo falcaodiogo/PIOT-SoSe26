@@ -53,9 +53,9 @@ export default function Home() {
       <div className="bg-gray-100 p-4 rounded-lg min-h-75 border border-gray-300">
         <h2 className="text-lg font-semibold mb-3">Incoming Messages</h2>
         {messages.length === 0 ? (
-          <p className="text-gray-500 italic">Waiting for hardware data...</p>
+          <p className="text-black italic">Waiting for hardware data...</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-black">
             {messages.map((msg) => (
               <li
                 key={msg}
