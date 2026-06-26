@@ -6,7 +6,7 @@ const char* ssid = "Diogo's Pixel 9 Pro XL";
 const char* password = "pixelzone";
 
 // The local IP address of your computer running Docker
-const char* mqtt_server = "10.13.147.126"; 
+const char* mqtt_server = "172.29.192.126"; 
 const int mqtt_port = 1883; // Standard MQTT port
 
 WiFiClient espClient;
