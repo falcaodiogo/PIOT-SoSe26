@@ -22,11 +22,10 @@ const int Humidity_Pin = D5;
 DHT dht(Humidity_Pin, DHT11);
 
 // --- Timers & State Variables ---
-const int waitingTime = 2000; // Publish every 2 seconds
+const int waitingTime = 2000; // Publish sensors every 2 seconds
 unsigned long lastMsg = 0;
 
-// Button toggle logic variables
-bool isSystemOn = true;       // Default state: OFF
+// Button debounce variables
 int lastButtonState = LOW;
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 50; // 50ms debounce to prevent flickering
@@ -67,7 +66,7 @@ void reconnect() {
 }
 
 void setup() {
-  Serial.begin(115200); // Unified baud rate
+  Serial.begin(115200); 
   
   // Initialize Pins
   pinMode(button_pin, INPUT);
@@ -87,7 +86,7 @@ void loop() {
   }
   client.loop(); // Keep MQTT connection alive
 
-  // --- Button Toggle Logic (Debounced) ---
+  // --- SOS Button Logic (Debounced & Instant) ---
   int reading = digitalRead(button_pin);
   
   if (reading != lastButtonState) {
@@ -95,17 +94,14 @@ void loop() {
   }
 
   if ((millis() - lastDebounceTime) > debounceDelay) {
-    // If the button state has changed and stabilized
+    // If the button is pressed (transitions from LOW to HIGH)
     if (reading == HIGH && lastButtonState == LOW) {
-      isSystemOn = !isSystemOn; // Toggle the system state
       
-      Serial.print("System toggled: ");
-      Serial.println(isSystemOn ? "ON" : "OFF");
+      Serial.println("*** SOS BUTTON PRESSED! ***");
       
-      // Publish an immediate status update when toggled off
-      if (!isSystemOn) {
-         client.publish("smartcane/sensors", "{\"status\": \"OFF\"}");
-      }
+      // Publish an immediate SOS alert to a dedicated topic
+      String sosPayload = "{\"alert\": \"SOS_TRIGGERED\", \"message\": \"Immediate assistance needed!\"}";
+      client.publish("smartcane/sos", sosPayload.c_str());
     }
   }
   lastButtonState = reading; // Save reading for next loop
@@ -113,8 +109,8 @@ void loop() {
   // --- Sensor Reading & Publishing ---
   unsigned long now = millis();
   
-  // Only read and publish if the system is toggled ON
-  if (isSystemOn && (now - lastMsg > waitingTime)) {
+  // Sensors run continuously every 2 seconds
+  if (now - lastMsg > waitingTime) {
     lastMsg = now;
 
     // Read Sensors
@@ -128,14 +124,13 @@ void loop() {
     // Check if DHT readings are valid
     if (isnan(humidity) || isnan(temperature)) {
       Serial.println("Failed to read from DHT11!");
-      // We will publish 0s or nulls if it fails, or you can skip publishing
       humidity = 0.0;
       temperature = 0.0;
     }
 
     // Format as JSON for the frontend
     String payload = "{";
-    payload += "\"status\":\"ON\",";
+    payload += "\"status\":\"ACTIVE\",";
     payload += "\"temperature\":" + String(temperature) + ",";
     payload += "\"humidity\":" + String(humidity) + ",";
     payload += "\"tilt\":" + String(tilt_state) + ",";
