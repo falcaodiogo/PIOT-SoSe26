@@ -18,6 +18,7 @@ const int IR_reciever_Pin_1 = D2;
 const int IR_reciever_Pin_2 = D3;
 const int IR_reciever_Pin_3 = D4;
 const int Humidity_Pin = D5;
+const int Buzzer_Pin = D7;
 
 DHT dht(Humidity_Pin, DHT11);
 
@@ -29,6 +30,10 @@ unsigned long lastMsg = 0;
 int lastButtonState = LOW;
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 50; // 50ms debounce to prevent flickering
+
+bool buzzerActive = false;
+unsigned long buzzerStartTime = 0;
+const unsigned long buzzerDuration = 1000; // 1 second in milliseconds
 
 void setup_wifi() {
   delay(10);
@@ -74,6 +79,8 @@ void setup() {
   pinMode(IR_reciever_Pin_1, INPUT);
   pinMode(IR_reciever_Pin_2, INPUT);
   pinMode(IR_reciever_Pin_3, INPUT);
+  pinMode(Buzzer_Pin, OUTPUT);
+  digitalWrite(Buzzer_Pin, LOW);
   
   dht.begin();
   setup_wifi();
@@ -105,6 +112,26 @@ void loop() {
     }
   }
   lastButtonState = reading; // Save reading for next loop
+
+  int ir1 = digitalRead(IR_reciever_Pin_1);
+  int ir2 = digitalRead(IR_reciever_Pin_2);
+  int ir3 = digitalRead(IR_reciever_Pin_3);
+
+
+  // if the IR1 senses something, it bips one time, if its the IR2, it beeps 2 times and if IR3 senses something, it beeps 3 times
+  if ((ir1 == LOW || ir2 == LOW || ir3 == LOW) && !buzzerActive) {
+    tone(Buzzer_Pin, 500, buzzerDuration); 
+    buzzerStartTime = millis();        // Save the start time
+    buzzerActive = true;               // Set flag
+    Serial.println("-> Proximity detected! Buzzer active.");
+  }
+
+  // Check if it's time to turn off the buzzer
+  if (buzzerActive && (millis() - buzzerStartTime >= buzzerDuration)) {
+    digitalWrite(Buzzer_Pin, LOW);    // Turn off buzzer
+    buzzerActive = false;              // Reset flag
+    Serial.println("-> Buzzer turning off.");
+  }
 
   // --- Sensor Reading & Publishing ---
   unsigned long now = millis();
