@@ -9,13 +9,10 @@ Prototyping the Internet of Things - SoSe26
 ## Hardware & Sensors
 
 * Passive buzzer module
-* LEDs
-* 4-5 vibration motors (requires transistor or motor driver)
 * Obstacle detector / IR sensor receiver + IR sensor transmitter
 * Water/humidity detector
 * Tilt switch
 * Vibration sensor (shock sensor)
-* Push button
 
 ## Notes
 
@@ -41,7 +38,7 @@ Once the individual components work on the breadboard, it is time to bring it al
 
 3D Printed Enclosures: To move from a messy breadboard to a sleek prototype, you can design custom housings. Leverage your experience in Fusion 360 to model compartments for the ESP32, battery, and sensors, and prep them in PrusaSlicer so they mount securely to the physical cane.
 
-MISS: crimping, materials used (PETG instead of PLA)
+MISS: crimping, materials used (PETG instead of PLA), datasheets, calculations in the beggigning
 
 
 Features: 
