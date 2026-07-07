@@ -17,30 +17,35 @@ Prototyping the Internet of Things - SoSe26
 * Vibration sensor (shock sensor)
 * Push button
 
-## Project Phases
+## Notes
 
-*Note: These phases serve as a general guideline and may be adapted as the project progresses.*
+Phase 1: The Software Infrastructure
+Start with what you know. Building the backend first gives your hardware a place to send data as soon as you plug it in.
+Set Up Docker & MQTT: Spin up an Eclipse Mosquitto image on Docker. It is lightweight, reliable, and the industry standard for IoT messaging. Configure it to accept anonymous connections locally to keep prototyping simple.
+Bootstrap the Web App: Initialize your React TypeScript project. Use a library like mqtt.js to connect the web app to your broker. Set up a simple UI that subscribes to a test topic and prints any incoming messages to the screen.
 
-**Phase 1: Software Infrastructure**
+Phase 2: ESP32 Cloud Connection
+Before wiring any sensors, prove that your microcontroller can talk to your web app.
+Connect to Wi-Fi: Write a script to connect the ESP32 to your local network.
 
-* Set up an Eclipse Mosquitto MQTT broker via Docker.
-* Initialize a React TypeScript web app and connect it to the broker using mqtt.js to read incoming data.
+Phase 3: Breadboard Prototyping
 
-**Phase 2: ESP32 Cloud Connection**
+Digital Inputs: ilt switch
 
-* Flash the ESP32 using Arduino IDE or PlatformIO.
-* Connect the microcontroller to the local Wi-Fi.
-* Publish a test message loop to the MQTT broker to verify the backend and frontend connection.
+Analog Inputs (Water & Obstacles): water/humidity detector and obstacle detector
 
-**Phase 3: Breadboard Prototyping**
+Basic Outputs (Buzzer): Wire up the passive buzzer. Write logic on the ESP32 to turn them on when the shock sensor is triggered
 
-* Test all components individually on a breadboard.
-* **Digital Inputs:** Read states from the button, tilt switch, and vibration sensor, publishing MQTT messages on trigger.
-* **Analog Inputs:** Read and visualize value ranges from the water and obstacle detectors.
-* **Outputs:** Code the ESP32 to trigger the LEDs and buzzer based on sensor states.
-* **Safety Note:** Do not drive the vibration motors directly from the ESP32 pins. Use a transistor (like NPN 2N2222) or motor driver module to handle the power draw safely.
+Phase 4: Integration and Fabrication
+Once the individual components work on the breadboard, it is time to bring it all together
 
-**Phase 4: Integration and Fabrication**
+3D Printed Enclosures: To move from a messy breadboard to a sleek prototype, you can design custom housings. Leverage your experience in Fusion 360 to model compartments for the ESP32, battery, and sensors, and prep them in PrusaSlicer so they mount securely to the physical cane.
 
-* **Logic Integration:** Combine component code into a unified "Smart Cane" system (e.g., mapping simultaneous tilt and shock triggers to an "EMERGENCY_FALL" MQTT payload, flashing LEDs, and sounding the buzzer).
-* **Fabrication:** Design custom housings in Fusion 360 for the ESP32, battery, and sensors, and prepare them in PrusaSlicer for mounting to the physical cane.
+MISS: crimping, materials used (PETG instead of PLA)
+
+
+Features: 
+-> Smart cane with 6 sensors
+-> Beggining at the bottom -> humidity and temperature sensor to sense wet and slippery floor -> 3 infrared sensors to mesure closeness to objects and warn the user trough the buzzer. Each direction has a different frequency and number of beeps -> tilti switch to sense falls with an alghoritm. LIMITATION (algorithm is sensing if there are movements every 30 seconds. If not, it will give an SOS signal to our webapp. -> webapp we can see every data of the sensors including the SOS signal with the 112 shourctut for like a caretacker of this person.
+
+idea, techinique, presentation
