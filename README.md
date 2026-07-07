@@ -8,11 +8,10 @@ Prototyping the Internet of Things - SoSe26
 
 ## Hardware & Sensors
 
-* Passive buzzer module
-* Obstacle detector / IR sensor receiver + IR sensor transmitter
-* Water/humidity detector
-* Tilt switch
-* Vibration sensor (shock sensor)
+* Passive buzzer module (KY-006)
+* IR sensor receiver + IR sensor transmitter (KY-032)
+* Water/humidity detector (KY-015)
+* Tilt switch (KY-017)
 
 ## Notes
 
@@ -27,9 +26,9 @@ Connect to Wi-Fi: Write a script to connect the ESP32 to your local network.
 
 Phase 3: Breadboard Prototyping
 
-Digital Inputs: ilt switch
+Digital Inputs: tilt switch, water/humidity detector and obstacle detector
 
-Analog Inputs (Water & Obstacles): water/humidity detector and obstacle detector
+Analog Inputs : We dont have any 
 
 Basic Outputs (Buzzer): Wire up the passive buzzer. Write logic on the ESP32 to turn them on when the shock sensor is triggered
 
