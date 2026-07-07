@@ -52,7 +52,7 @@ export default function Home() {
 
   useEffect(() => {
     // Hardcoded to your specific MQTT broker IP
-    const client = mqtt.connect("ws://172.29.192.126:9001");
+    const client = mqtt.connect("ws://10.244.248.126:9001");
 
     client.on("connect", () => {
       setConnectionStatus("Connected");
@@ -111,21 +111,21 @@ export default function Home() {
         },
         {
           id: "ir1",
-          name: "IR Sensor 1",
+          name: "Front IR Sensor",
           value: sensorData.ir1,
           status: sensorData.ir1 === 0 ? "Detecting" : "Clear",
           active: sensorData.ir1 === 0,
         },
         {
           id: "ir2",
-          name: "IR Sensor 2",
+          name: "Right IR Sensor",
           value: sensorData.ir2,
           status: sensorData.ir2 === 0 ? "Detecting" : "Clear",
           active: sensorData.ir2 === 0,
         },
         {
           id: "ir3",
-          name: "IR Sensor 3",
+          name: "Left IR Sensor",
           value: sensorData.ir3,
           status: sensorData.ir3 === 0 ? "Detecting" : "Clear",
           active: sensorData.ir3 === 0,
@@ -233,6 +233,9 @@ export default function Home() {
           <div className="flex flex-col">
             <span className="font-semibold text-sm md:text-base">
               SmartCane ESP32 Node
+            </span>
+            <span className="text-xs md:text-sm text-zinc-500 font-mono mt-0.5">
+              Ammar and Diogo
             </span>
             <span className="text-xs md:text-sm text-zinc-500 font-mono mt-0.5">
               ws://172.29.192.126:9001

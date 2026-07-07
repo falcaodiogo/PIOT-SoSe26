@@ -7,6 +7,7 @@ int IR_reciever_Pin_1 = D2;
 int IR_reciever_Pin_2 = D3;
 int IR_reciever_Pin_3 = D4;
 int Humidity_Pin = D5;
+int Buzzer_Pin = D7;
 
 DHT dht(Humidity_Pin, DHT11); // initialize with pin and sensor type
 
@@ -17,6 +18,9 @@ void setup()
     pinMode(IR_reciever_Pin_1, INPUT);
     pinMode(IR_reciever_Pin_2, INPUT);
     pinMode(IR_reciever_Pin_3, INPUT);
+    pinMode(Buzzer_Pin, OUTPUT);
+    digitalWrite(Buzzer_Pin, LOW);
+  
     Serial.begin(9600);
 
     dht.begin(); // replaces pinMode for the DHT pin
@@ -58,6 +62,7 @@ void loop()
     Serial.print(IR_rec_state_3);
     Serial.print("; Tilt state: ");
     Serial.print(tilt_state);
+    tone(Buzzer_Pin, 0, 0);
     Serial.println();
     // }
 

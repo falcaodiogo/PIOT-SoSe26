@@ -1,27 +1,21 @@
-// int Proximity_PIN = D3;
-
-// void setup() {
-//   pinMode(Proximity_PIN, INPUT);
-//     Serial.begin(9600);
-// }
-
-// void loop() {
-//   int IR_rec_state = digitalRead(Proximity_PIN); 
-//   Serial.println(IR_rec_state);
-//   delay(3000);                                          
-// }
+const int TiltSwitch = D1;
+const int Buzzer_Pin = D7;
+const int buzzerDuration = 200; // ms, how long the buzzer sounds
 
 void setup() {
-  // Initialize GPIO 2 as an output
-  pinMode(2, OUTPUT);
+  pinMode(TiltSwitch, INPUT);
+  pinMode(Buzzer_Pin, OUTPUT);
+  digitalWrite(Buzzer_Pin, LOW);
+  Serial.begin(9600);
 }
 
 void loop() {
-  // Turn the LED on
-  digitalWrite(2, LOW);   
-  delay(1000);                      
-  
-  // Turn the LED off
-  digitalWrite(2, HIGH);    
-  delay(1000);                      
+  int tilt_state = digitalRead(TiltSwitch);
+
+  if (tilt_state == HIGH) {   // adjust HIGH/LOW depending on your wiring
+    Serial.println("TiltSwitch triggered");
+    tone(Buzzer_Pin, 500, buzzerDuration);
+  }
+
+  delay(1000); // wait 1 second between checks/buzzes
 }
